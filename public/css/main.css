@@ -2,12 +2,11 @@
      float: right;
      margin-top: -43px;
  }
- 
- img {
+ /* td img {
      width: 70px;
      height: 70px;
      border-radius: 50%;
- }
+ } */
  
  .add-product {
      float: right;

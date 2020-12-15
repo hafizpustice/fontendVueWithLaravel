@@ -13,8 +13,7 @@ class MyServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind(
-            'App\Validator\ApiResponse');
+        //$this->app->bind('App\Validator\ApiResponse');
 
     }
 
@@ -25,6 +24,6 @@ class MyServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->app->bind('\App\Validator\ApiResponse');
+        //$this->app->bind('\App\Validator\ApiResponse');
     }
 }

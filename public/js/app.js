@@ -2012,9 +2012,107 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+      previewImage: null,
+      url: "",
       editMode: false,
       products: {},
       form: new Form({
@@ -2030,13 +2128,59 @@ __webpack_require__.r(__webpack_exports__);
     init: function init() {
       var _this = this;
 
-      this.form.get("/product").then(function (response) {
+      this.form.get("api/product").then(function (response) {
         console.log("init-in");
-        console.log(response.product);
-        _this.products = response.product;
+        console.log(response.data);
+        _this.products = response.data;
       })["catch"](function (error) {
         return console.log(error);
       });
+    },
+    createProduct: function createProduct() {
+      console.log(this.form);
+      this.form.post("/product");
+    },
+    uploadImage: function uploadImage(e) {
+      console.log("image");
+      var file = e.target.files[0];
+      this.form.image = URL.createObjectURL(file);
+      console.log(URL.createObjectURL(file));
+      var reader = new FileReader(); // reader.onloadend = (file) => {
+      //   //console.log('RESULT', reader.result)
+      //   this.form.image = reader.result;
+      //   console.log(reader.result);
+      // };
+      //reader.readAsDataURL(file);
+    },
+    getImage: function getImage() {
+      var image = this.form.image;
+      return image;
+    },
+    selectImage: function selectImage() {
+      this.$refs.fileInput.click();
+    },
+    pickFile: function pickFile() {
+      var _this2 = this;
+
+      var input = this.$refs.fileInput;
+      console.log(input);
+      var file = input.files;
+      console.log(file);
+      console.log(file[0].name);
+
+      if (file && file[0]) {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+          console.log("onload");
+          _this2.previewImage = e.target.result;
+          _this2.from.image = e.target.result;
+          console.log(_this2.previewImage);
+        };
+
+        reader.readAsDataURL(file[0]);
+        this.$emit("input", file[0]);
+      }
     }
   },
   // created() {
@@ -37707,8 +37851,6 @@ var render = function() {
                   _vm._v(" "),
                   _c("td", [_vm._v(_vm._s(product.title))]),
                   _vm._v(" "),
-                  _c("td", [_vm._v(_vm._s(product.description))]),
-                  _vm._v(" "),
                   _c("td", [_vm._v(_vm._s(product.price))]),
                   _vm._v(" "),
                   _vm._m(3, true),
@@ -37721,7 +37863,176 @@ var render = function() {
           ])
         ])
       ])
-    ])
+    ]),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "modal fade bd-example-modal-lg",
+        attrs: {
+          tabindex: "-1",
+          id: "productModal",
+          role: "dialog",
+          "aria-labelledby": "myLargeModalLabel",
+          "aria-hidden": "true"
+        }
+      },
+      [
+        _c("div", { staticClass: "modal-dialog modal-lg" }, [
+          _c("div", { staticClass: "modal-content" }, [
+            _vm._m(5),
+            _vm._v(" "),
+            _c("div", { staticClass: "modal-body" }, [
+              _c(
+                "form",
+                {
+                  attrs: { method: "post", enctype: "multipart/form-data" },
+                  on: {
+                    submit: function($event) {
+                      $event.preventDefault()
+                      _vm.editMode ? _vm.updateProduct() : _vm.createProduct()
+                    }
+                  }
+                },
+                [
+                  _c("div", { staticClass: "card-body" }, [
+                    _c("div", { staticClass: "form-group" }, [
+                      _c("label", { attrs: { for: "" } }, [
+                        _vm._v("Product title")
+                      ]),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.form.title,
+                            expression: "form.title"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: {
+                          type: "text",
+                          name: "title",
+                          placeholder: "Enter email"
+                        },
+                        domProps: { value: _vm.form.title },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(_vm.form, "title", $event.target.value)
+                          }
+                        }
+                      })
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-group" }, [
+                      _c("label", { attrs: { for: "" } }, [
+                        _vm._v("Description")
+                      ]),
+                      _vm._v(" "),
+                      _c("textarea", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.form.description,
+                            expression: "form.description"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: { type: "text", name: "description" },
+                        domProps: { value: _vm.form.description },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.form,
+                              "description",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      })
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-group" }, [
+                      _c("label", [_vm._v("Price")]),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.form.price,
+                            expression: "form.price"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: {
+                          type: "number",
+                          name: "price",
+                          placeholder: "product price"
+                        },
+                        domProps: { value: _vm.form.price },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(_vm.form, "price", $event.target.value)
+                          }
+                        }
+                      })
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-group" }, [
+                      _c("label", [_vm._v("Image")]),
+                      _vm._v(" "),
+                      _c("input", {
+                        staticClass: "form-control",
+                        attrs: { type: "file", name: "image", id: "image" },
+                        on: { change: _vm.uploadImage }
+                      })
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "image-preview" }, [
+                      _c("img", {
+                        attrs: {
+                          src: _vm.form.image,
+                          alt: "preview Image",
+                          id: "image_preview_container"
+                        }
+                      })
+                    ]),
+                    _vm._v(" "),
+                    _c("div", {
+                      staticClass: "imagePreviewWrapper",
+                      style: {
+                        "background-image": "url(" + _vm.previewImage + ")"
+                      },
+                      on: { click: _vm.selectImage }
+                    }),
+                    _vm._v(" "),
+                    _c("input", {
+                      ref: "fileInput",
+                      attrs: { type: "file" },
+                      on: { input: _vm.pickFile }
+                    })
+                  ])
+                ]
+              )
+            ]),
+            _vm._v(" "),
+            _vm._m(6)
+          ])
+        ])
+      ]
+    )
   ])
 }
 var staticRenderFns = [
@@ -37761,9 +38072,18 @@ var staticRenderFns = [
       _c("h3", { staticClass: "card-title" }, [_vm._v("Product List")]),
       _vm._v(" "),
       _c("div", { staticClass: "add-product" }, [
-        _c("a", { staticClass: "btn btn-success", attrs: { href: "" } }, [
-          _vm._v("Add Product")
-        ])
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-success",
+            attrs: {
+              type: "button",
+              "data-toggle": "modal",
+              "data-target": "#productModal"
+            }
+          },
+          [_vm._v("\n            Add Product\n          ")]
+        )
       ])
     ])
   },
@@ -37796,14 +38116,8 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("td", [
-      _c("a", { attrs: { href: "", "data-id": "" } }, [
-        _vm._v(
-          "\n                                    Edit\n                                "
-        )
-      ]),
-      _vm._v(
-        "\n                                |\n                                "
-      ),
+      _c("a", { attrs: { href: "", "data-id": "" } }, [_vm._v(" Edit ")]),
+      _vm._v("\n                |\n                "),
       _c(
         "a",
         {
@@ -37813,11 +38127,53 @@ var staticRenderFns = [
             "data-id": ""
           }
         },
-        [
-          _vm._v(
-            "\n                                    Delete\n                                "
-          )
-        ]
+        [_vm._v("\n                  Delete\n                ")]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header" }, [
+      _c(
+        "h5",
+        { staticClass: "modal-title", attrs: { id: "productModalLabel" } },
+        [_vm._v("Create Product")]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Close"
+          }
+        },
+        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-footer" }, [
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-secondary",
+          attrs: { type: "button", "data-dismiss": "modal" }
+        },
+        [_vm._v("\n            Close\n          ")]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        { staticClass: "btn btn-primary", attrs: { type: "button" } },
+        [_vm._v("Save changes")]
       )
     ])
   }
@@ -53445,11 +53801,11 @@ var Form = /*#__PURE__*/function () {
   }, {
     key: "reset",
     value: function reset() {
-      console.log('reser');
+      console.log('reset');
       console.log(this.orginalData);
 
       for (var field in this.orginalData) {
-        console.log('rese ' + field);
+        console.log('reset field ' + field);
         this[field] = '';
       }
     }
@@ -53499,8 +53855,8 @@ var routes = [{
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\wamp64\www\fontendVueWithLaravel\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\wamp64\www\fontendVueWithLaravel\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /var/www/html/fontendVueWithLaravel/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /var/www/html/fontendVueWithLaravel/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

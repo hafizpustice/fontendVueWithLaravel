@@ -58,10 +58,10 @@ class Form {
     }
 
     reset() {
-        console.log('reser');
+        console.log('reset');
         console.log(this.orginalData);
         for (let field in this.orginalData) {
-            console.log('rese ' + field);
+            console.log('reset field ' + field);
             this[field] = '';
         }
     }

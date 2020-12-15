@@ -1,9 +1,9 @@
 <?php
 namespace App\Validator;
 
-trait ApiResponse
+class ApiResponse
 {
-    protected function responseApiWithSuccess($message = '', $data = [], $code = 200)
+    public function responseApiWithSuccess($message = '', $data = [], $code = 200)
     {
         return response()->json([
             'success' => true,
@@ -11,7 +11,7 @@ trait ApiResponse
             'data' => $data,
         ], $code);
     }
-    protected function responseApiWithError($message = '', $data = [], $code = 400)
+    public function responseApiWithError($message = '', $data = [], $code = 400)
     {
         return response()->json([
             'error' => true,
