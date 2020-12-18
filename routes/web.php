@@ -21,8 +21,8 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-// Route::Resources(
-//     [
-//         'product' => 'Vue\ProductController',
-//     ]
-// );
+Route::Resources(
+    [
+        'product' => 'Vue\ProductController',
+    ]
+);

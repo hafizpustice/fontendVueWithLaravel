@@ -11,6 +11,7 @@ class Form {
         this.errors = new Error();
     }
 
+
     data() {
         let data = {};
 
@@ -26,6 +27,13 @@ class Form {
         return this.submit('get', url)
     }
 
+    post(url) {
+        return this.submit('post', url)
+    }
+
+    put(url) {
+        return this.submit('put')
+    }
 
     submit(requestType, url) {
 
@@ -63,6 +71,12 @@ class Form {
         for (let field in this.orginalData) {
             console.log('reset field ' + field);
             this[field] = '';
+        }
+    }
+    fill(data) {
+        for (let field in this.orginalData) {
+            console.log('set field ' + field);
+            this[field] = data[field];
         }
     }
 }

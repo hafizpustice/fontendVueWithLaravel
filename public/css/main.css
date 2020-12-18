@@ -2,11 +2,12 @@
      float: right;
      margin-top: -43px;
  }
- /* td img {
+ 
+ .table-image {
      width: 70px;
      height: 70px;
      border-radius: 50%;
- } */
+ }
  
  .add-product {
      float: right;
@@ -15,13 +16,13 @@
  
  .image-preview {
      border: 2px solid black;
-     width: 25%;
+     width: 37%;
      height: 206px;
      border-radius: 3px;
  }
  
  .image-preview img {
-     width: 263px;
+     width: 264px;
      height: 201px;
      border: 1px solid #fffeef border-radious: 3px;
  }
