@@ -20,7 +20,7 @@
         </div>
     </div> --}}
     <h1>Single Page Application with Vue</h1>
-    <router-link to="/product" class="pull-right">Product</router-link>
+    <router-link to="/product" class="btn btn-info pull-right mb-2">Click Product</router-link>
     <router-view> </router-view>
 </div>
 @endsection

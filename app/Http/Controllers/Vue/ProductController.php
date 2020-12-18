@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Model\Product;
 use App\Validator\ApiResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class ProductController extends Controller
 {
@@ -35,23 +37,33 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
-        //dd($request->all());
+        if ($request->is('wedevs/*')) { //for api request response
+            $validator = Validator::make($request->all(), $this->rules);
+            if ($validator->fails()) {
+                return $this->apiResponse->responseApiWithError('product list get successfully', $validator->messages()->all());
+            } else {
+                $fileName = Str::random(25) . '_123_' . $request['image']->getClientOriginalName();
+                request()->image->move(public_path('storage/product'), $fileName);
+                $path = 'storage/product/' . $fileName;
+                Product::create([
+                    'title' => $request->title,
+                    'description' => $request->description,
+                    'price' => $request->price,
+                    'image' => $path,
+                ]);
+            }
+            return $this->apiResponse->responseApiWithSuccess('product save successfully', []);
+        }
+
+        //fpor web httpp request
         $data = $this->validate($request, $this->rules);
-
-        //$validator = Validator::make($request->all(), $this->rules);
-
-        // if ($validator->fails()) {
-        //     dd($validator->messages()->all());
-        // } else {
         Product::create([
             'title' => $request->title,
             'description' => $request->description,
             'price' => $request->price,
             'image' => $request->image,
         ]);
-        // Session::flash('message', 'Created Successfully.');
         return $this->apiResponse->responseApiWithSuccess('Product created successfully', null);
-        //}
     }
 
     public function show($id)
@@ -74,8 +86,30 @@ class ProductController extends Controller
     {
         $this->rules = collect($this->rules)->merge([
             'title' => 'required|unique:products,title' . ($product->id ? ",$product->id" : ''),
+            'image' => 'nullable',
         ])->toArray();
 
+        if ($request->is('wedevs/*')) { //for api request response
+            $validator = Validator::make($request->all(), $this->rules);
+            if ($validator->fails()) {
+                return $this->apiResponse->responseApiWithError('Invalid from data', $validator->messages()->all());
+            } else {
+                if ($request->file('image')) {
+                    $fileName = Str::random(25) . '_123_' . $request['image']->getClientOriginalName();
+                    request()->image->move(public_path('storage/product'), $fileName);
+                    $path = 'storage/product/' . $fileName;
+                }else{
+                    $path = $product->image;
+                }
+                $product->title = $request->title;
+                $product->description = $request->description;
+                $product->price = $request->price;
+                $product->image = $request->title;
+                $product->save();
+            }
+            return $this->apiResponse->responseApiWithSuccess('product updated successfully', []);
+        }
+        //foe web http request
         $data = $this->validate($request, $this->rules);
 
         if (array_key_exists('errors', $data)) {
